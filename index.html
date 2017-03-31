@@ -1,57 +1,64 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Badge</title>
-
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script> <!-- жейкверя -->
-    <script type="text/javascript" src="jspdf.min.js"></script> <!-- jsPDF -->
-    <script type="text/javascript" src="html2canvas.js"></script> <!-- htm2canvas - схранение содержимого указанного элемента страницы в картинку -->
-    <script type="text/javascript">
-        // Скрипт, создающий PDF из страницы
-        function genPDF() {
-            html2canvas(document.getElementById('printpage'), { // получаем элемент, который засунем с pdf
-                onrendered: function (canvas) {
-
-                    var img = canvas.toDataURL("image/png");
-                    var doc = new jsPDF();
-                    doc.addImage(img, 'JPEG', 10, 5);
-                    doc.save('badge.pdf');
-                }
-            });
-        }
-    </script>
-    <script type="text/javascript">
-        // Скрипт, преобразующий изображение в base-64 для предпросмотра
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('.image').attr('src', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        $(".imgUpload").change(function(){
-            readURL(this);
-        });
-    </script>
+<!-- Force latest IE rendering engine or ChromeFrame if installed -->
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<![endif]-->
+<meta charset="utf-8">
+<title>Печать бейджей</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap styles -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<!-- Generic page styles -->
+<link rel="stylesheet" href="css/main.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="css/jquery.fileupload.css">
+<link rel="stylesheet" href="css/jquery.fileupload-ui.css">
 </head>
 <body>
-    <div id="printpage" class="page-body">
-        <div id="badge-1" class="badge">
+<div class="container">
+    <!-- The file upload form used as target for the file upload widget -->
+    <form id="fileupload" method="POST" enctype="multipart/form-data">
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class="row fileupload-buttonbar">
+            <div class="col-lg-7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Выбрать фотографии сотрудников</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+                <a href="javascript:genPDF()" class="btn btn-primary"><i class="glyphicon glyphicon-file"></i>&nbsp;Сохранить Файл</a>
+            </div>
+        </div>
+        <!-- The table listing the files available for upload/download -->
+        <div role="presentation" id="printpage" class="page-body">
+            <div class="files">
+
+            </div>
+        </div>
+    </form>
+</div>
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+
+    <div class="badge2 template-upload fade">
             <div class="badge-body">
-                <!--<div class="badge-header"></div> This element for drag&drop badge -->
                 <div class="photo-bg">
-                    <div class="photo" id="photo-1">
-                        <img class="image" src="no-photo.png" alt="">
-                        <div class="upload-file-container-text">
-                            <input type="file" class="imgUpload" required="required" />
-                        </div>
+                    <div class="photo">
+                        <span class="preview"></span>
                     </div>
                 </div>
+                {% if (!i) { %}
+                <div class="delete-badge" data-html2canvas-ignore="true">
+                    <button class="btn btn-danger cancel">
+                        <i class="glyphicon glyphicon-remove"></i>
+                        <span>Удалить бейдж</span>
+                    </button>
+                </div>
+                {% } %}
                 <div class="badge-name">
                     <p class="name">
                         <input type="text" placeholder="Фамилия" required="required" maxlength="15" />
@@ -68,10 +75,77 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div style="clear:both;"></div>
 
-    <a href="javascript:genPDF()">Сохранить Файл</a> <!-- Кнопка сохранить PDF -->
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+<!-- Не трогать. Хз почему. Без неё не работает. Не разбирался. Ди и хер с ней. -->
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="js/vendor/jquery.ui.widget.js"></script>
+<!-- The Templates plugin is included to render the upload/download listings -->
+<script src="//blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<!-- blueimp Gallery script -->
+<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="js/jquery.fileupload.js"></script>
+<!-- The File Upload processing plugin -->
+<script src="js/jquery.fileupload-process.js"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="js/jquery.fileupload-image.js"></script>
+<!-- The File Upload audio preview plugin -->
+<script src="js/jquery.fileupload-audio.js"></script>
+<!-- The File Upload video preview plugin -->
+<script src="js/jquery.fileupload-video.js"></script>
+<!-- The File Upload validation plugin -->
+<script src="js/jquery.fileupload-validate.js"></script>
+<!-- The File Upload user interface plugin -->
+<script src="js/jquery.fileupload-ui.js"></script>
+<!-- The main application script -->
+<script src="js/main.js"></script>
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+<!--[if (gte IE 8)&(lt IE 10)]>
+<script src="js/cors/jquery.xdr-transport.js"></script>
+<![endif]-->
+
+<script type="text/javascript" src="js/pdf/jspdf.min.js"></script>
+<script type="text/javascript" src="js/pdf/html2canvas.js"></script>
+
+
+<script type="text/javascript">
+    // Скрипт, создающий PDF из страницы
+    function genPDF() {
+        html2canvas(document.getElementById('printpage'), { // получаем элемент, который засунем в pdf
+            onrendered: function (canvas) {
+
+                var img = canvas.toDataURL("image/png");
+                var doc = new jsPDF();
+                doc.addImage(img, 'JPEG', 10, 10);
+                doc.save('badge.pdf');
+				location.reload();
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $('#fileupload').fileupload({
+        // The maximum width of the preview images:
+        previewMaxWidth: 112,
+        // The maximum height of the preview images:
+        previewMaxHeight: 150
+    })
+</script>
 
 </body>
 </html>

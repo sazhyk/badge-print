@@ -1,0 +1,30 @@
+<html>
+
+<head>
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        function cloNeN() {
+            $("#container").clone()        		// сделаем копию элемента Привет, Пока, Привет
+                    .addClass("newElement")         // добавим этой копии класс newElement
+                    .appendTo("#clone");        // вставим измененный элемент в конец элемента clone
+        }
+    </script>
+
+</head>
+
+<body onload="cloNeN()">
+
+<div id="container">
+    <div id="ih" class="hello">Привет</div>
+    <div id="ih1" class="goodbye">Пока</div>
+    <div id="ih2" class="hello">Привет</div>
+</div>
+
+</br>
+
+<div id="clone"></div>
+
+</body>
+
+</html>

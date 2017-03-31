@@ -3,24 +3,42 @@ Author:     sazhyk
 */
 
 html, body {
-    margin: 20px 0 0;
+    width: 100%;
+    margin: 0;
     padding: 0;
 }
+
+/*.badge-header {
+    background-color: transparent;
+    position: relative;
+    left: -1px;
+    bottom: -24px;
+    margin-top: -25px;
+    width: 338px;
+    height: 25px;
+    z-index: 99;
+    box-sizing: border-box;
+    cursor: move;
+}*/
 
 .page-body {
     width: 210mm;
     margin: 5px;
+    /*text-align: center;*/
+    /*border: 1px solid rgba(185, 185, 185, 1);*/
 }
 
-.badge2 {
+.badge {
     display: inline-block;
- }
+    float: left;
+}
 
 .badge-body {
     width: 338px;
     height: 206px;
     border: 1px solid rgba(44, 44, 44, 0.5);
     box-sizing: border-box;
+    /*float: left;*/
     display: inline-block;
     margin: 3px 10px;
     background-color: #ffffff;
@@ -42,21 +60,7 @@ html, body {
     position: relative;
     left: 10px;
     top: 46px;
-}
-
-.delete-badge {
-    position: relative;
-    top: -206px;
-    left: 195px;
-    width: 141px;
-    height: 34px;
-    margin-bottom: -34px;
-    opacity: 0;
-    transition: opacity ease-in-out .18s;
-}
-
-.badge-body:hover .delete-badge {
-    opacity: 1;
+    background-color: rgba(185, 185, 185, 1);
 }
 
 .badge-name {
@@ -106,4 +110,24 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 14pt;
+}
+
+.photo > img {
+    width: 112px;
+    height: 150px;
+}
+
+.upload-file-container-text input  {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 112px;
+    height: 150px;
+    cursor: pointer;
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Badge</title>
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script> <!-- жейкверя -->
+    <script type="text/javascript" src="jspdf.min.js"></script> <!-- jsPDF -->
+    <script type="text/javascript" src="html2canvas.js"></script> <!-- htm2canvas - схранение содержимого указанного элемента страницы в картинку -->
+    <script type="text/javascript">
+        // Скрипт, создающий PDF из страницы
+        function genPDF() {
+            html2canvas(document.getElementById('printpage'), { // получаем элемент, который засунем с pdf
+                onrendered: function (canvas) {
+
+                    var img = canvas.toDataURL("image/png");
+                    var doc = new jsPDF();
+                    doc.addImage(img, 'JPEG', 10, 5);
+                    doc.save('badge.pdf');
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        // Скрипт, преобразующий изображение в base-64 для предпросмотра
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.image').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".imgUpload").change(function(){
+            readURL(this);
+        });
+    </script>
+</head>
+<body>
+    <div id="printpage" class="page-body">
+        <div id="badge-1" class="badge">
+            <div class="badge-body">
+                <!--<div class="badge-header"></div> This element for drag&drop badge -->
+                <div class="photo-bg">
+                    <div class="photo" id="photo-1">
+                        <img class="image" src="no-photo.png" alt="">
+                        <div class="upload-file-container-text">
+                            <input type="file" class="imgUpload" required="required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="badge-name">
+                    <p class="name">
+                        <input type="text" placeholder="Фамилия" required="required" maxlength="15" />
+                    </p>
+                    <p class="name">
+                        <input type="text" placeholder="Имя" required="required" maxlength="15" />
+                    </p>
+                    <p class="name">
+                        <input type="text" placeholder="Отчество" required="required" maxlength="15" />
+                    </p>
+                </div>
+                <div class="badge-brand">
+                    <p>Сотрудник компании</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+
+    <a href="javascript:genPDF()">Сохранить Файл</a> <!-- Кнопка сохранить PDF -->
+
+</body>
+</html>
